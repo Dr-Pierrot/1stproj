@@ -1,6 +1,5 @@
-    
 
-    <div class="row ">
+    <div class="row">
         <div class="col-10">
         <h2><?= $title ?></h2>
         </div>
@@ -11,15 +10,55 @@
     <hr>
  
 
-<?php foreach($posts as $post): ?>
-    <div class="container border">
-        <h3><?php echo $post['title']; ?></h3>
-        <small class="post-date">Posted on: <?php echo $post['created_at'];?></small><br>
-        <?php echo $post['body']; ?>
-        <br><br>
-        <p><a class="btn btn-primary" href="<?php echo site_url('/posts/'.$post['slug']); ?>">Read More</a></p>
-    </div><br>
-    
-<?php endforeach; ?>
+
+    <div id="show-post"></div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     
+
+<script>
+
+    // Ajax
+    $(document).ready(function() {
+        // Fetch data on page load
+        fetchData();
+
+        function fetchData() {
+            $.ajax({
+                url: "<?php echo base_url('api/getposts'); ?>",
+                type: "GET",
+                async: true,
+                dataType: "json",
+                success: function(data) {
+                    var i;
+                    var txt = "";
+                    
+                    for(i=0; i<data.length; i++){
+                        txt += ` 
+                        <div class="container border">
+                            <h3>${data[i].title}</h3>
+                            <small class="post-date">Posted on: ${data[i].created_at}</small>
+                            <p>${data[i].body}</p>
+                            <br><br>
+                            <p><a class="btn btn-primary" href="posts/${data[i].slug}">Read More</a></p>
+                        </div><br>
+                        `;
+                    
+
+                    }
+                    // document.getElementById("show-post").innerHTML = txt;
+                
+                    
+                    $('#show-post').html(txt);
+                    
+                },
+                error: function() {
+                    alert('Error fetching data');
+                }
+            });
+        }
+        setInterval(fetchData, 3000); // Update every 3 seconds
+    });
+</script>

@@ -13,6 +13,13 @@
             return $query->row_array();
         }
         
+        public function get_posts_api(){
+
+            $query = $this->db->get('posts');
+            return $query->result_array();
+        }
+
+
         public function create_post(){
             $slug = url_title($this->input->post('title'));
 
