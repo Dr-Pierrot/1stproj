@@ -1,3 +1,8 @@
+<?php
+  if(!$this->session->userdata('user')){
+    redirect(""); 
+  }
+?>
 <h2><?= $title ?></h2>
 
 <table class="table table-bordered">

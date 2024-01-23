@@ -1,15 +1,15 @@
     
     </div>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br><br>
 
 	<footer class="section footer-classic context-light bg-image" style="background: #e2e2e2;">
         <div class="container">
-          <div class="row row-30">
+          <div class="row row-30 pt-5">
             <div class="col-md-4 col-xl-5">
-              <div class="pr-xl-4"><a class="brand" href="home">1stProj</a>
+              <div class="pr-xl-4"><a class="brand font-monospace fs-4" href="home">1stProj-<small>School Management System</small></a>
                 <p>We are an award-winning creative agency, dedicated to the best result in web design, promotion, business consulting, and marketing.</p>
                 <!-- Rights-->
-                <p class="rights"><span>©  </span><span class="copyright-year">2018</span><span> </span><span>Waves</span><span>. </span><span>All Rights Reserved.</span></p>
+                <p class="rights"><span>©  </span><span class="copyright-year">2024</span><span> </span><span>Maslam</span><span>. </span><span>All Rights Reserved.</span></p>
               </div>
             </div>
             <div class="col-md-4">

@@ -1,7 +1,14 @@
 <?php
     class Login extends CI_Controller{
         public function index(){
-            $this->load->view('pages/login');    // this will load the login page
+
+
+            if($this->session->userdata('user')){
+                redirect("home");
+            }else{
+                $this->load->view('pages/login');    // this will load the login page
+            }
+            
         }
         
         // public function process(){

@@ -10,27 +10,18 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-        <div class="container">
-            <a class="navbar-brand" href="<?php echo base_url(); //redirect to the homepage/dashboard ?>home">1stproj - <small >School Management System</small></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url(); //url for homepage/dashboard ?>home">Home 
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url(); //url for about page  ?>about">About</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url(); //url for blogs page?>posts">Blogs</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo base_url(); //url for blogs page?>students">Students</a>
-                    </li>
+
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-4">
+        <div class="container px-5">
+            <a class="navbar-brand font-monospace" href="<?php echo base_url(); //redirect to the homepage/dashboard ?>home">1stproj - <small >School Management System</small></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url(); //url for homepage/dashboard ?>home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url(); //url for about page  ?>about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url(); //url for blogs page?>posts">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo base_url(); //url for blogs page?>students">Students</a></li>
                 </ul>
             </div>
             <div class="position-absolute bottom-5 end-0 col-1">
