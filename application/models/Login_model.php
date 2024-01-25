@@ -18,5 +18,20 @@
             return $query->row_array();
         }
 
+        public function statusOnline($username, $password){
+            $data = array(
+                'status' => 1,
+            );
+            $this->db->where('username', $username, 'password', $password);
+            return $this->db->update('users', $data);
+        }
+
+        public function statusOffline($username, $password){
+            $data = array(
+                'status' => 0,
+            );
+            $this->db->where('username', $username, 'password', $password);
+            return $this->db->update('users', $data);
+        }
         
     }

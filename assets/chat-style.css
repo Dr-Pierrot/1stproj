@@ -127,7 +127,8 @@ body{
     font-size: 16px;
     border-radius: 7px;
     display: inline-block;
-    position: relative
+    position: relative;
+    
 }
 
 .chat .chat-history .message:after {
@@ -141,11 +142,13 @@ body{
     pointer-events: none;
     border-bottom-color: #fff;
     border-width: 10px;
-    margin-left: -10px
+    margin-left: -10px;
+    
 }
 
 .chat .chat-history .my-message {
-    background: #efefef
+    background: #efefef;
+    
 }
 
 .chat .chat-history .my-message:after {

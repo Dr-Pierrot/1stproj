@@ -49,12 +49,10 @@ class Api extends CI_Controller {
 	}
 
 	public function insertchats(){
-		$chat_id = 5050;
 		$user_id = $_SESSION['user']['id'];
 		$message = $this->input->post('message');
 
 		$data = array(
-			'chatId' => $chat_id,
 			'userId' => $user_id,
 			'message' => $message,
 		);

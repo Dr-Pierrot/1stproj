@@ -10,25 +10,6 @@
             }
             
         }
-        
-        // public function process(){
-        //     // declaring variables
-        //     $user = $this->input->post('user');
-        //     $pass = $this->input->post('pass');
-        //     $data['title'] = 'Home';
-
-        //     $data2['username'] = $this->login_model->get_password($user);
-            
-        //     if($pass==$data2){ // setting up the validation of the credentials
-        //         $this->session->set_userdata(array('user'=>$user)); // declaring the session
-        //         $this->load->view('templates/header');
-        //         $this->load->view('pages/home', $data);  // display the home page
-        //         $this->load->view('templates/footer');
-        //     }else{
-        //         $data['error'] = 'Your Account is Invalid!'; // credential error
-        //         $this->load->view('pages/login', $data);  // load the login page agian
-        //     }
-        // }
 
         public function login1(){
             //declaring the variables
@@ -36,6 +17,7 @@
             $password = $_POST['password'];
 
             $data = $this->login_model->login($username, $password); //checker for username and password
+            $this->login_model->statusOnline($username, $password);
 
             if($data){
                 $this->session->set_userdata('user', $data);
@@ -49,7 +31,11 @@
 
         public function logout()  // log out function
         {
+            //declaring the variables
+            $username = $_SESSION['user']['username'];
+            $password = $_SESSION['user']['password'];
             $this->session->unset_userdata('user');  // kill session
+            $this->login_model->statusOffline($username, $password);
             redirect("");  
         } 
         
