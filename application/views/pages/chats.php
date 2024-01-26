@@ -3,7 +3,7 @@
     redirect(""); 
   }
 ?>
-<link rel="stylesheet" href="assets/chat-style.css">
+
 
 <div class="container" >
     <div class="row clearfix"  >
@@ -20,39 +20,32 @@
                     </ul>
                 </div>
                 
-                <div class="chat"  style="overflow : auto;display:flex; flex-direction:column-reverse;height:700px;" id="chatView">
-                    <div class="container" style="flex:1;">
-                        <div class="chat-header clearfix bg-light" style="position:sticky; top: 0; left: 0; z-index: 999; width: 100%; height: 70px;">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
-                                    </a>
-                                    <div class="chat-about" id="userHeader">
-                                        
-                                    </div>
+                <div class="chat" style="overflow: auto; display: flex; flex-direction: column; height: 700px;" id="chatView">
+                    <div class="chat-header clearfix bg-light" style="height: 70px;">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="javascript:void(0);" data-toggle="modal" data-target="#view_info">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                                </a>
+                                <div class="chat-about" id="userHeader">
+                                    
                                 </div>
                             </div>
                         </div>
-                        <div class="chat-history" id="chatBoxP" style="height:600px;">
-                            <ul class="m-b-0" id="chatbox">
-                            </ul>
-                        </div>
-                        
-                        <div class="chat-message clearfix position-sticky bottom-0 bg-light">
-                            <div class="input-group mb-0" id="chatsBox">
-                                <form action="" class="input-group">
-                                    <input type="hidden" name="mateId" id="mateId">
-                                    <textarea class="form-control" name="message" id="message_content" cols="30" rows="1" placeholder="Enter text here..."></textarea>                                 
-                                    <div class="input-group-prepend">
-                                        <button class="input-group-text" id="btnSend"><i class="fa fa-send"></i></button>
-                                    </div>
-                                </form>
+                    </div>
+                    <div class="chat-history" id="chatBoxP" style="flex: 1; overflow-y: auto; height: 100%; display: flex; flex-direction: column-reverse;">
+                        <ul class="m-b-1" id="chatbox">
+                        </ul>
+                    </div>
+                    <div class="chat-message clearfix bg-light" style="margin-top: 20px;">
+                        <div class="input-group mb-0" id="chatsBox">
+                            <input type="hidden" name="mateId" id="mateId">
+                            <textarea class="form-control" name="message" id="message_content" cols="30" rows="1" placeholder="Enter text here..."></textarea>                                 
+                            <div class="input-group-prepend">
+                                <button class="input-group-text" id="btnSend"><i class="fa fa-send"></i></button>
                             </div>
                         </div>
                     </div>
-                    
-                    
                 </div>
             </div>
         </div>
@@ -63,12 +56,11 @@
     $(document).ready(function () {
         // Fetch data on page load
         fetchUsers();
-
         function fetchUsers(){
             $.ajax({
                 url:"<?php echo base_url('api/getusers'); ?>",
                 method: "GET",
-                async: true,
+                async: false,
                 dataType: "json",
                 success:function(data){
                     var user_list = "";
@@ -107,15 +99,16 @@
             var header = "";
             var id = $(this).attr('id');
             var x = document.getElementById("mateId").value = id;
-            
-            
-
+            $('#chatbox').html(' ');
             $.ajax({
                 url:"<?php echo base_url('api/getusers'); ?>",
                 method: "GET",
                 dataType: "json",
                 async: true,
                 success: function(data){
+                    fetchData();
+                    $('#chatbox').html('');
+                    
                     for(i=0;i<data.length;i++){
                         did = data[i].id;
                         if(id == did){
@@ -135,8 +128,7 @@
             
         });
 
-        
-        fetchData();
+    
 
         function fetchData() {
             var header = $("#head").val();
@@ -145,54 +137,57 @@
                 url: "<?php echo base_url('api/getchats'); ?>",
                 type: "GET",
                 async: true,
-                
+                data:{user: user, mate: header},
                 dataType: "json",
                 success: function(data) {
                     var chat_message = "";
                     console.log(data);
-                    var mateId = $("#mateId").val();
                     
-                    for(i=0;i<data.length;i++){
-                        
-                        const d = new Date(data[i].dateMessage);
-                        const today = new Date();
-                        var day = d.getDate();
-                        var month = d.getMonth();
-                        var hour = d.getHours();
-                        var minute = d.getMinutes();
-                        var pmam;
-                        var yt;
-                        
+                    if(!header){
+                        $('#chatbox').html('<p>Please Select a user</p>');
+                    }else if(data.length === 0){
+                        $('#chatbox').html('<p>Please message the user!</p>');
+                    }else{
+                        for(i=0;i<data.length;i++){
+                            const d = new Date(data[i].dateMessage);
+                            const today = new Date();
+                            var day = d.getDate();
+                            var month = d.getMonth();
+                            var hour = d.getHours();
+                            var minute = d.getMinutes();
+                            var pmam;
+                            var yt;
+                    
 
-                        if(today.getDate() == day){
-                            yt = "Today";
-                        }else if(day < today.getDate()){
-                            yt= "Yesterday";
-                        }else if((today.getDate() - day) < 9){
-                            yt = "A week ago";
-                        }
+                            if(today.getDate() == day){
+                                yt = "Today";
+                            }else if(day < today.getDate()){
+                                yt= "Yesterday";
+                            }else if((today.getDate() - day) < 9){
+                                yt = "A week ago";
+                            }
 
 
-                        if(hour>12){
-                            pmam = "PM";
-                        }else{
-                            pmam = "AM";
-                        }
-                        
-                        if(header != null){
-                            if(data[i].userId == <?php echo $_SESSION['user']['id'] ?>){
-                            chat_message += `
-                            <li class="clearfix" >
-                                <div class="message-data text-right">
-                                    <small class="message-data-time">${hour}:${minute} ${pmam}, ${yt}</small>
-                                    
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
-                                    <small class="bg-secondary rounded-circle p-1" >Me</small>
-                                </div>
-                                <div class="message other-message float-right rounded text-left"> ${data[i].message} </div>
-                            </li>
-                            `;
-                            }else if(data[i].userId == mateId){
+                            if(hour>12){
+                                pmam = "PM";
+                            }else{
+                                pmam = "AM";
+                            }
+                    
+                    
+                            if(data[i].userId == user){
+                                chat_message += `
+                                <li class="clearfix" >
+                                    <div class="message-data text-right">
+                                        <small class="message-data-time">${hour}:${minute} ${pmam}, ${yt}</small>
+                                        
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                                        <small class="bg-secondary rounded-circle p-1" >Me</small>
+                                    </div>
+                                    <div class="message other-message float-right rounded text-left"> ${data[i].message} </div>
+                                </li>
+                                `;
+                            }else if(data[i].mateId == user){
                                 chat_message += `
                                 <li class="clearfix">
                                     <div class="message-data">
@@ -200,15 +195,13 @@
                                     </div>
                                     <div class="message my-message rounded" style="max-width:500px;"> ${data[i].message}</div>                                  
                                 </li>
-                            `;
+                                `;
                             }
+                            $('#chatbox').html(chat_message);
                         }
-                        
-                        
-                        $('#chatbox').html(chat_message);
-
-                        // alert(data[i].userId);
                     }
+                    
+                    
                     
                     
                 },
@@ -226,18 +219,22 @@
         $("#btnSend").click(function () {
             var mateId = $("#mateId").val();
             const message = $("#message_content").val();
-            alert(mateId);
-            $.ajax({
+            
+            if(mateId ==0){
+                alert("Choose a user to message!");
+                $('#message_content').val('');
+            }else{
+                $('#message_content').val('');
+                $.ajax({
                 url:"<?php echo base_url('api/insertchats');?>",
                 method:'POST',
                 data:{message:message, mateId:mateId},
                 success:function(data){
-                    alert(data+"1");
-                    $('#message_content').val('');
+                    
                 }
-            });
-            return false;
-            
+                });
+                return false;
+            }
         });
         
 

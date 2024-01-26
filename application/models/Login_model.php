@@ -18,19 +18,19 @@
             return $query->row_array();
         }
 
-        public function statusOnline($username, $password){
+        public function statusOnline($id){
             $data = array(
                 'status' => 1,
             );
-            $this->db->where('username', $username, 'password', $password);
+            $this->db->where('id', $id);
             return $this->db->update('users', $data);
         }
 
-        public function statusOffline($username, $password){
+        public function statusOffline($id){
             $data = array(
                 'status' => 0,
             );
-            $this->db->where('username', $username, 'password', $password);
+            $this->db->where('id', $id);
             return $this->db->update('users', $data);
         }
         

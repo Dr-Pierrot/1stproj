@@ -8,13 +8,14 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/chat-style.css">
 </head>
 
 <body>
 
     <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-4">
-        <div class="container px-5">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-4 ">
+        <div class="container px-5 ">
             <a class="navbar-brand font-monospace" href="<?php echo base_url(); //redirect to the homepage/dashboard ?>home">1stproj - <small >School Management System</small></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -29,7 +30,7 @@
             <div class="position-absolute bottom-5 end-0 col-2">
                 <div class="row">
                     <div class="col-6 d-flex align-items-center">
-                        <h6 class="text-light font-monospace">Hi! <?php echo $_SESSION['user']['username']; ?> </h6>
+                        <h6 class="text-light font-monospace">Hi! <?php echo $_SESSION['user']['username'];  ?> </h6>
                     </div>
                     <div class="col-6">
                         <a class="text-light btn btn-danger" href="Login/logout">Sign out</a> <?php //log out button and kill session ?>

@@ -4,9 +4,10 @@
             $this->load->database(); // this will open the database
         }
 
-        public function get_chat(){
-            $chats = array('userId' => 1 , 'userId' => 6);
-            $this->db->where($chats);
+        public function get_chat($user, $mate){
+            $chats = array('userId' => array($user,$mate), 'mateId' => array($user,$mate));
+            $this->db->where_in('userId', $chats['userId']);
+            $this->db->where_in('mateId', $chats['mateId']);
             $query = $this->db->get('chats');
             return $query->result_array();
         }

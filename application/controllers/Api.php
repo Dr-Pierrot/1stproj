@@ -38,9 +38,9 @@ class Api extends CI_Controller {
 
 	public function getchats()
 	{	
-		// $userId = $_GET['userId'];
-		// $mateId = $_GET['mateId'];
-		$query = $this->chat_model->get_chat();
+		$userId = $this->input->get('user');
+		$mateId = $this->input->get('mate');
+		$query = $this->chat_model->get_chat($userId, $mateId);
         echo json_encode($query);
 	}
 

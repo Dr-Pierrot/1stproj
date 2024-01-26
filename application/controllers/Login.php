@@ -17,13 +17,13 @@
             $password = $_POST['password'];
 
             $data = $this->login_model->login($username, $password); //checker for username and password
-            $this->login_model->statusOnline($username, $password);
-
+            
             if($data){
                 $this->session->set_userdata('user', $data);
+                $this->login_model->statusOnline($data['id']);
                 redirect('home');
             }else{
-                $data['error'] = 'Your Account is Invalid!'; //credentials error
+                $data['error'] = 'Your Account is Invalid!. Username or Password is incorrect.'; //credentials error
                 $this->session->set_flashdata('error','Invalid login. Email or Password is incorrect.');
                 $this->load->view('pages/login', $data);
             }
@@ -32,10 +32,9 @@
         public function logout()  // log out function
         {
             //declaring the variables
-            $username = $_SESSION['user']['username'];
-            $password = $_SESSION['user']['password'];
+            $id = $_SESSION['user']['id'];
             $this->session->unset_userdata('user');  // kill session
-            $this->login_model->statusOffline($username, $password);
+            $this->login_model->statusOffline($id);
             redirect("");  
         } 
         
