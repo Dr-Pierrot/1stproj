@@ -37,7 +37,9 @@ class Api extends CI_Controller {
 	}
 
 	public function getchats()
-	{
+	{	
+		// $userId = $_GET['userId'];
+		// $mateId = $_GET['mateId'];
 		$query = $this->chat_model->get_chat();
         echo json_encode($query);
 	}
@@ -50,26 +52,17 @@ class Api extends CI_Controller {
 
 	public function insertchats(){
 		$user_id = $_SESSION['user']['id'];
+		$mateId = $this->input->post('mateId');
 		$message = $this->input->post('message');
 
 		$data = array(
 			'userId' => $user_id,
+			'mateId' => $mateId,
 			'message' => $message,
 		);
-
 		$query = $this->chat_model->insert_chat($data);
-		echo json_enconde($query);
+		echo json_enconde($query);		
 	}
 
 }
-
-
-
-//
-// ajax
-// method: get/post
-// url: controller/function
-// async -> wait true/false
-
-// setInvertal(3000)
 

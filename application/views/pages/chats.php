@@ -40,12 +40,14 @@
                         </div>
                         
                         <div class="chat-message clearfix position-sticky bottom-0 bg-light">
-                            <div class="input-group mb-0">
-                                <!-- <input type="text" class="form-control" name="message" id="message_content" placeholder="Enter text here...">    -->
-                                <textarea class="form-control" name="message" id="message_content" cols="30" rows="1" placeholder="Enter text here..."></textarea>                                 
-                                <div class="input-group-prepend">
-                                    <button class="input-group-text" id="btnSend"><i class="fa fa-send"></i></button>
-                                </div>
+                            <div class="input-group mb-0" id="chatsBox">
+                                <form action="" class="input-group">
+                                    <input type="hidden" name="mateId" id="mateId">
+                                    <textarea class="form-control" name="message" id="message_content" cols="30" rows="1" placeholder="Enter text here..."></textarea>                                 
+                                    <div class="input-group-prepend">
+                                        <button class="input-group-text" id="btnSend"><i class="fa fa-send"></i></button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -70,7 +72,7 @@
                 dataType: "json",
                 success:function(data){
                     var user_list = "";
-                    
+                    var user = <?php echo $_SESSION['user']['id']; ?>;
 
                     for(i=0;i<data.length;i++){
                         var status;
@@ -79,7 +81,9 @@
                         }else{
                             status = 'online';
                         }
-                        user_list += `
+
+                        if(data[i].id != user){
+                            user_list += `
                             <li class="clearfix luser" id="${data[i].id}">
                                 <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
                                 <div class="about">
@@ -87,7 +91,9 @@
                                     <div class="status"> <i class="fa fa-circle ${status}"></i>${status} </div>
                                 </div>
                             </li>
-                        `;
+                            `;
+                        }
+                        
                     }
 
                     $('#userBox').html(user_list);
@@ -100,6 +106,9 @@
         $(document).on('click', '.luser', function(){
             var header = "";
             var id = $(this).attr('id');
+            var x = document.getElementById("mateId").value = id;
+            
+            
 
             $.ajax({
                 url:"<?php echo base_url('api/getusers'); ?>",
@@ -109,14 +118,16 @@
                 success: function(data){
                     for(i=0;i<data.length;i++){
                         did = data[i].id;
-
                         if(id == did){
                         var header = `
-                            <h6 class="m-b-0">${data[i].name}</h6> 
-                            <small>Last seen: 2 hours ago</small> 
+                            <input type="hidden" id="head" value="${did}">
+                            <h6 class="m-b-0">${data[i].name}</h6>
+                            <small>Last seen: 2 hours ago</small>
+                            
                         `;
                         }
                     }
+                    
                     $('#userHeader').html(header);
                 }
             });
@@ -124,19 +135,23 @@
             
         });
 
-        fetchData();
         
+        fetchData();
 
         function fetchData() {
+            var header = $("#head").val();
+            var user = <?php echo $_SESSION['user']['id'] ?>;
             $.ajax({
                 url: "<?php echo base_url('api/getchats'); ?>",
                 type: "GET",
                 async: true,
+                
                 dataType: "json",
                 success: function(data) {
                     var chat_message = "";
+                    console.log(data);
+                    var mateId = $("#mateId").val();
                     
-
                     for(i=0;i<data.length;i++){
                         
                         const d = new Date(data[i].dateMessage);
@@ -147,8 +162,7 @@
                         var minute = d.getMinutes();
                         var pmam;
                         var yt;
-
-                       
+                        
 
                         if(today.getDate() == day){
                             yt = "Today";
@@ -165,8 +179,8 @@
                             pmam = "AM";
                         }
                         
-
-                        if(data[i].userId == <?php echo $_SESSION['user']['id']; ?>){
+                        if(header != null){
+                            if(data[i].userId == <?php echo $_SESSION['user']['id'] ?>){
                             chat_message += `
                             <li class="clearfix" >
                                 <div class="message-data text-right">
@@ -177,17 +191,19 @@
                                 </div>
                                 <div class="message other-message float-right rounded text-left"> ${data[i].message} </div>
                             </li>
-                        `;
-                        }else{
-                            chat_message += `
-                            <li class="clearfix">
-                                <div class="message-data">
-                                    <small class="message-data-time">${hour}:${minute} ${pmam}, ${yt}</small>
-                                </div>
-                                <div class="message my-message rounded" style="max-width:500px;"> ${data[i].message}</div>                                    
-                            </li>
-                        `;
+                            `;
+                            }else if(data[i].userId == mateId){
+                                chat_message += `
+                                <li class="clearfix">
+                                    <div class="message-data">
+                                        <small class="message-data-time">${hour}:${minute} ${pmam}, ${yt}</small>
+                                    </div>
+                                    <div class="message my-message rounded" style="max-width:500px;"> ${data[i].message}</div>                                  
+                                </li>
+                            `;
+                            }
                         }
+                        
                         
                         $('#chatbox').html(chat_message);
 
@@ -208,14 +224,16 @@
         // On button click, get value 
         // of input control 
         $("#btnSend").click(function () {
+            var mateId = $("#mateId").val();
             const message = $("#message_content").val();
-            $('#message_content').val('');
+            alert(mateId);
             $.ajax({
                 url:"<?php echo base_url('api/insertchats');?>",
                 method:'POST',
-                data:{message:message},
+                data:{message:message, mateId:mateId},
                 success:function(data){
-
+                    alert(data+"1");
+                    $('#message_content').val('');
                 }
             });
             return false;

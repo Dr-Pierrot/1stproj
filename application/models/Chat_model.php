@@ -5,7 +5,8 @@
         }
 
         public function get_chat(){
-
+            $chats = array('userId' => 1 , 'userId' => 6);
+            $this->db->where($chats);
             $query = $this->db->get('chats');
             return $query->result_array();
         }
