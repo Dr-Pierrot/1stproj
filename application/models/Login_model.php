@@ -21,6 +21,7 @@
         public function statusOnline($id){
             $data = array(
                 'status' => 1,
+                'login_at' => date("Y-m-d H:i:s"),
             );
             $this->db->where('id', $id);
             return $this->db->update('users', $data);
@@ -29,6 +30,7 @@
         public function statusOffline($id){
             $data = array(
                 'status' => 0,
+                'logout_at' => date("Y-m-d H:i:s"),
             );
             $this->db->where('id', $id);
             return $this->db->update('users', $data);

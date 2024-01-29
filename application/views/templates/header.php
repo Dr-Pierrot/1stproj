@@ -13,6 +13,10 @@
 
 <body>
 
+    <?php
+        $_SESSION['timeout'] = time();
+    ?>
+
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary py-4 ">
         <div class="container px-5 ">
@@ -41,6 +45,19 @@
     </nav>
     <br>
     <div class="container">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     
-
+    <script>
+        sessionTime();
+        function sessionTime(){
+            var dateNow = new Date()/1000;
+            var timeout = <?php echo $_SESSION['timeout']?>;
+            var x = dateNow - timeout;
+            if(Math.floor(x) == 1800){
+                alert("30 minutes have passed! You are forcefully to be signed off!");
+                location = 'login/logout';
+            }
+        }
+        setInterval(sessionTime, 1000);
+    </script>
  

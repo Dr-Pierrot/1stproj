@@ -51,7 +51,6 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $(document).ready(function () {
         // Fetch data on page load
@@ -99,25 +98,48 @@
             var header = "";
             var id = $(this).attr('id');
             var x = document.getElementById("mateId").value = id;
-            $('#chatbox').html(' ');
+            fetchData();
+            // $('#chatbox').html(' ');
             $.ajax({
                 url:"<?php echo base_url('api/getusers'); ?>",
                 method: "GET",
                 dataType: "json",
                 async: true,
                 success: function(data){
-                    fetchData();
-                    $('#chatbox').html('');
                     
+                    $('#chatbox').html('');
+                    var header = "";
                     for(i=0;i<data.length;i++){
                         did = data[i].id;
+                        const today = new Date();
+                        const logout= new Date(data[i].logout_at);
+                        const login = new Date(data[i].login_at);
+                                         
+                        console.log(<?php echo isset($_SESSION['user']);?>);
+
                         if(id == did){
-                        var header = `
-                            <input type="hidden" id="head" value="${did}">
-                            <h6 class="m-b-0">${data[i].name}</h6>
-                            <small>Last seen: 2 hours ago</small>
-                            
-                        `;
+                            header += `
+                                <input type="hidden" id="head" value="${did}">
+                                <h6 class="m-b-0">${data[i].name}</h6>
+                            `;
+                            if(data[i].status == 1){
+                                header += `
+                                    <small>Status: Online</small>
+                                `;
+                            }else{
+                                if((logout.getDate() - login.getDate()) > 0){
+                                    header += `
+                                    <small>Last seen: Day/s ago</small>
+                                    `;
+                                }else{
+                                    if(logout.getHours() > 0){
+                                    header += `
+                                    <small>Last seen: Hour/s ago</small>
+                                    `;
+                                }}
+                                
+                                
+                            }
                         }
                     }
                     
@@ -141,7 +163,6 @@
                 dataType: "json",
                 success: function(data) {
                     var chat_message = "";
-                    console.log(data);
                     
                     if(!header){
                         $('#chatbox').html('<p>Please Select a user</p>');
@@ -167,13 +188,11 @@
                                 yt = "A week ago";
                             }
 
-
                             if(hour>12){
                                 pmam = "PM";
                             }else{
                                 pmam = "AM";
                             }
-                    
                     
                             if(data[i].userId == user){
                                 chat_message += `
